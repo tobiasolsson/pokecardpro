@@ -3,7 +3,7 @@ package com.pokecardpro.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "book")
+@Table(name = "pokemon")
 public class Pokemon {
 
     @Id
