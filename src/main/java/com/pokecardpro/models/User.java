@@ -8,32 +8,31 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     private int phone;
     private String street;
-    private int street_nr;
+    private int streetNr;
     private String city;
-    private int zip_code;
+    private int zipCode;
 
     public User() {
     }
 
-    public User(int id, String first_name, String last_name, String email, String password, int phone, String street,
-                int street_nr, String city, int zip_code) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.street = street;
-        this.street_nr = street_nr;
+        this.streetNr = streetNr;
         this.city = city;
-        this.zip_code = zip_code;
+        this.zipCode = zipCode;
     }
+
 
     public int getId() {
         return id;
@@ -43,20 +42,20 @@ public class User {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -91,12 +90,12 @@ public class User {
         this.street = street;
     }
 
-    public int getStreet_nr() {
-        return street_nr;
+    public int getStreetNr() {
+        return streetNr;
     }
 
-    public void setStreet_nr(int street_nr) {
-        this.street_nr = street_nr;
+    public void setStreetNr(int streetNr) {
+        this.streetNr = streetNr;
     }
 
     public String getCity() {
@@ -107,11 +106,11 @@ public class User {
         this.city = city;
     }
 
-    public int getZip_code() {
-        return zip_code;
+    public int getZipCode() {
+        return zipCode;
     }
 
-    public void setZip_code(int zip_code) {
-        this.zip_code = zip_code;
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
     }
 }
