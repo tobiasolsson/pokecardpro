@@ -1,6 +1,7 @@
 package com.pokecardpro.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -13,16 +14,17 @@ public class Auction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(targetEntity = Card.class)
+    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = Card.class)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private Card card;
+    private Card cardId;
 
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User userId;
 
     private String title;
 
+    @Column(columnDefinition="TEXT")
     private String description;
 
     private boolean status;
@@ -31,10 +33,12 @@ public class Auction {
 
     private int reservedPrice;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp endDate;
 
     private Boolean pickUp;
 
+    //@Enumerated(EnumType.STRING)
     private Shipping shipping;
 
     private int endBid;
@@ -42,11 +46,10 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(int id, Card card, User user, String title, String description, boolean status,
+    public Auction(Card card, User user, String title, String description, boolean status,
                    int buyNow, int reservedPrice, Timestamp endDate, Boolean pickUp, Shipping shipping, int endBid) {
-        this.id = id;
-        this.card = card;
-        this.user = user;
+        this.cardId = card;
+        this.userId = user;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -66,20 +69,20 @@ public class Auction {
         this.id = id;
     }
 
-    public Card getCard() {
-        return card;
+    public Card getCardId() {
+        return cardId;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    public void setCardId(Card cardId) {
+        this.cardId = cardId;
     }
 
-    public User getUser() {
-        return user;
+    public User getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {
