@@ -15,7 +15,7 @@ public class UserController {
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
-
+/*
     @GetMapping("user")
     public User getSingleUser(@RequestBody String user) {
         return userService.getUserById(user);
@@ -35,5 +35,8 @@ public class UserController {
     public String deleteSingleUser(String id) {
         return userService.deleteUser(id);
     }
+
+
+ */
 
 }
