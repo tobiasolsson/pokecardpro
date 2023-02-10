@@ -20,8 +20,7 @@ public class Card {
 
     private String image;
 
-    public Card(int id, Pokemon pokemon, String qualityRanking, String qualityComment, String image) {
-        this.id = id;
+    public Card(Pokemon pokemon, String qualityRanking, String qualityComment, String image) {
         this.pokemon = pokemon;
         this.qualityRanking = qualityRanking;
         this.qualityComment = qualityComment;
