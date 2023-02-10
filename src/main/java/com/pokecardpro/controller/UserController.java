@@ -2,6 +2,7 @@ package com.pokecardpro.controller;
 
 import com.pokecardpro.models.User;
 import com.pokecardpro.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,11 +11,14 @@ import java.util.List;
 @RequestMapping("/api/")
 public class UserController {
 
+    @Autowired
     UserService userService;
     @PostMapping("user")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
+
+
 /*
     @GetMapping("user")
     public User getSingleUser(@RequestBody String user) {
