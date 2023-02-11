@@ -19,4 +19,8 @@ public class AuctionService {
     public List<Auction> getAllAuctions() {
         return auctionRepository.findAll();
     }
+
+    public List<Auction> getAllActiveAuctions() {
+        return auctionRepository.findAllAuctionsByStatusTrue();
+    }
 }

@@ -22,4 +22,9 @@ public class AuctionController {
     public List<Auction> getAllAuctions() {
         return auctionService.getAllAuctions();
     }
+
+    @GetMapping("auction/active")
+    public List<Auction> getAllActiveAuctions() {
+        return auctionService.getAllActiveAuctions();
+    }
 }
