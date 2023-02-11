@@ -27,4 +27,9 @@ public class AuctionController {
     public List<Auction> getAllActiveAuctions() {
         return auctionService.getAllActiveAuctions();
     }
+
+    @GetMapping("auction/{id}")
+    public Auction getAuctionById(@PathVariable String id) {
+        return auctionService.getAuctionById(id);
+    }
 }

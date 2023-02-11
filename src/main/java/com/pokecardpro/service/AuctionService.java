@@ -23,4 +23,8 @@ public class AuctionService {
     public List<Auction> getAllActiveAuctions() {
         return auctionRepository.findAllAuctionsByStatusTrue();
     }
+
+    public Auction getAuctionById(String id) {
+        return auctionRepository.findById(id).orElseThrow();
+    }
 }
