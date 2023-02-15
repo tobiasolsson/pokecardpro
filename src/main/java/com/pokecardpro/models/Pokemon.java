@@ -2,6 +2,8 @@ package com.pokecardpro.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "pokemon")
 public class Pokemon {
@@ -15,6 +17,9 @@ public class Pokemon {
     private String rarity;
     private int cardNumber;
     private String description;
+    @ManyToMany(mappedBy = "pokemons")
+    private Set<User> users;
+
 
     public Pokemon() {
     }
