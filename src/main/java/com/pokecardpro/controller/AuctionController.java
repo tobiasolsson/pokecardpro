@@ -28,6 +28,11 @@ public class AuctionController {
         return auctionService.getAllActiveAuctions();
     }
 
+    @GetMapping("auction/old")
+    public List<Auction> getAllOldAuctions() {
+        return auctionService.getAllOldAuctions();
+    }
+
     @GetMapping("auction/{id}")
     public Auction getAuctionById(@PathVariable String id) {
         return auctionService.getAuctionById(id);

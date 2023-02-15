@@ -13,4 +13,6 @@ public interface AuctionRepository extends JpaRepository<Auction, String> {
     @Query
     List<Auction> findAllAuctionsByStatusTrue();
 
+    @Query
+    List<Auction> findAllAuctionsByStatusFalse();
 }
