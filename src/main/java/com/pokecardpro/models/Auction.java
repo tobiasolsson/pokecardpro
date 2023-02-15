@@ -41,15 +41,18 @@ public class Auction {
     //@Enumerated(EnumType.STRING)
     private Shipping shipping;
 
+    private int shippingCost;
+
     private int endBid;
 
     public Auction() {
     }
 
-    public Auction(Card card, User user, String title, String description, boolean status,
-                   int buyNow, int reservedPrice, Timestamp endDate, Boolean pickUp, Shipping shipping, int endBid) {
-        this.cardId = card;
-        this.userId = user;
+    public Auction(Card cardId, User userId, String title, String description, boolean status,
+                   int buyNow, int reservedPrice, Timestamp endDate, Boolean pickUp, Shipping shipping,
+                   int shippingCost, int endBid) {
+        this.cardId = cardId;
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -58,7 +61,16 @@ public class Auction {
         this.endDate = endDate;
         this.pickUp = pickUp;
         this.shipping = shipping;
+        this.shippingCost = shippingCost;
         this.endBid = endBid;
+    }
+
+    public int getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(int shippingCost) {
+        this.shippingCost = shippingCost;
     }
 
     public int getId() {
