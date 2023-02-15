@@ -33,7 +33,8 @@ public class Auction {
 
     private int reservedPrice;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    //yyyy-MM-dd-HH-mm-ss.zzz
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp endDate;
 
     private Boolean pickUp;
