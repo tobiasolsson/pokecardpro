@@ -35,12 +35,14 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("user")
-    public String deleteSingleUser(String id) {
+ */
+
+    @DeleteMapping("user/{id}")
+    public String deleteSingleUser(@PathVariable String id) {
         return userService.deleteUser(id);
     }
 
 
- */
+
 
 }
