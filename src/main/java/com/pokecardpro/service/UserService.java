@@ -35,6 +35,8 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        String encodedPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
