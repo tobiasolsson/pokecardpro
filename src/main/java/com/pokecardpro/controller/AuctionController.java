@@ -21,12 +21,13 @@ public class AuctionController {
     public Auction createAuction(@RequestBody Auction auction) {
         // get current timestamp
         LocalDateTime currentTime = LocalDateTime.now();
+        // start date to correct format
+        Timestamp startDate = Timestamp.valueOf(currentTime);
         // and set endDate to current time + 7 days
-        LocalDateTime endDate = currentTime.plusDays(7);
-        // set to correct type
-        Timestamp timestamp = Timestamp.valueOf(endDate);
-        // set endDate in object
-        auction.setEndDate(timestamp);
+        Timestamp endDate = Timestamp.valueOf(currentTime.plusDays(7));
+        // set dates in object
+        auction.setEndDate(endDate);
+        auction.setStartDate(startDate);
 
         return auctionService.createAuction(auction);
     }

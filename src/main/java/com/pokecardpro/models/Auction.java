@@ -33,6 +33,9 @@ public class Auction {
 
     private int reservedPrice;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    private Timestamp startDate;
+
     //yyyy-MM-dd-HH-mm-ss.zzz
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp endDate;
@@ -49,8 +52,8 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(Card cardId, User userId, String title, String description, boolean status,
-                   int buyNow, int reservedPrice, Timestamp endDate, Boolean pickUp, Shipping shipping,
+    public Auction(Card cardId, User userId, String title, String description, boolean status, int buyNow,
+                   int reservedPrice, Timestamp startDate, Timestamp endDate, Boolean pickUp, Shipping shipping,
                    int shippingCost, int endBid) {
         this.cardId = cardId;
         this.userId = userId;
@@ -59,11 +62,20 @@ public class Auction {
         this.status = status;
         this.buyNow = buyNow;
         this.reservedPrice = reservedPrice;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.pickUp = pickUp;
         this.shipping = shipping;
         this.shippingCost = shippingCost;
         this.endBid = endBid;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
     }
 
     public int getShippingCost() {
