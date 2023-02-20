@@ -20,13 +20,13 @@ public class User {
     private String city;
     private int zipCode;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Wishlist> wishlists;
+    @OneToOne(mappedBy = "user")
+    private Wishlist wishlist;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode, Set<Pokemon> pokemons, Set<Wishlist> wishlists) {
+    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode, Set<Pokemon> pokemons, Wishlist wishlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -36,7 +36,7 @@ public class User {
         this.streetNr = streetNr;
         this.city = city;
         this.zipCode = zipCode;
-        this.wishlists = wishlists;
+        this.wishlist = wishlist;
     }
 
 
@@ -120,11 +120,12 @@ public class User {
         this.zipCode = zipCode;
     }
 
-    public Set<Wishlist> getWishlists() {
-        return wishlists;
+
+    public Wishlist getWishlist() {
+        return wishlist;
     }
 
-    public void setWishlists(Set<Wishlist> wishlists) {
-        this.wishlists = wishlists;
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 }

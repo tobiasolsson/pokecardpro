@@ -15,7 +15,7 @@ public class Pokemon {
     private String rarity;
     private int cardNumber;
     private String description;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id")
     private Wishlist wishlist;
 
