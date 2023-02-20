@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class PokemonService {
-
     @Autowired
     PokemonRepository pokemonRepository;
 
@@ -22,6 +21,7 @@ public class PokemonService {
         }
         return "Pokemon has been deleted from wishlist successfully";
     }
+
     public Pokemon createPokemon(Pokemon thePokemon) {
         return pokemonRepository.save(thePokemon);
     }
