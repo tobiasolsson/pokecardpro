@@ -2,6 +2,8 @@ package com.pokecardpro.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "wishlist")
 public class Wishlist {
@@ -10,32 +12,20 @@ public class Wishlist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(name = "wishlist_name")
     private String name;
 
-    @OneToOne(mappedBy = "wishlist")
-    private Pokemon pokemon;
-
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private User user;
-
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
+    private Set<Pokemon> pokemons;
 
     public Wishlist() {
     }
 
-    public Wishlist(String name, Pokemon pokemon, User user) {
+    public Wishlist(String name, Set<Pokemon> pokemons) {
         this.name = name;
-        this.pokemon = pokemon;
-        this.user = user;
+        this.pokemons = pokemons;
     }
 
-    public Pokemon getPokemon() {
-        return pokemon;
-    }
-
-    public void setPokemon(Pokemon pokemon) {
-        this.pokemon = pokemon;
-    }
 
     public String getName() {
         return name;
@@ -45,11 +35,11 @@ public class Wishlist {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public Set<Pokemon> getPokemons() {
+        return pokemons;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPokemons(Set<Pokemon> pokemons) {
+        this.pokemons = pokemons;
     }
 }

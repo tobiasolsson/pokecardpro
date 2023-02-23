@@ -15,8 +15,8 @@ public class Pokemon {
     private String rarity;
     private int cardNumber;
     private String description;
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
     private Wishlist wishlist;
 
 

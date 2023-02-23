@@ -12,7 +12,7 @@ public class PokemonController {
     PokemonService pokemonService;
 
     @DeleteMapping("pokemon/{pokemonId}/{wishlistId}")
-    public String deletePokemonFromWishlist(@PathVariable String pokemonId, @PathVariable String wishlistId ) {
+    public String deletePokemonFromWishlist(@PathVariable int pokemonId, @PathVariable int wishlistId ) {
         return pokemonService.deletePokemonFromWishlist(pokemonId, wishlistId);
     }
 
