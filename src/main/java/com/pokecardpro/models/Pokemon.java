@@ -2,8 +2,6 @@ package com.pokecardpro.models;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "pokemon")
 public class Pokemon {
@@ -17,28 +15,22 @@ public class Pokemon {
     private String rarity;
     private int cardNumber;
     private String description;
-    @ManyToMany(mappedBy = "pokemons")
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
+    private Wishlist wishlist;
 
 
     public Pokemon() {
     }
 
-    public Pokemon(String name, String image, String set, String rarity, int cardNumber, String description) {
+    public Pokemon(String name, String image, String set, String rarity, int cardNumber, String description, Wishlist wishlist) {
         this.name = name;
         this.image = image;
         this.set = set;
         this.rarity = rarity;
         this.cardNumber = cardNumber;
         this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.wishlist = wishlist;
     }
 
     public String getName() {
@@ -87,5 +79,13 @@ public class Pokemon {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 }

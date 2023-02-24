@@ -33,6 +33,10 @@ public class PokemonController {
     public Pokemon updatePokemon(@RequestBody Pokemon thePokemon) {
         return pokemonService.updatePokemon(thePokemon);
     }
+    @DeleteMapping("pokemon/{pokemonId}/{wishlistId}")
+    public String deletePokemonFromWishlist(@PathVariable int pokemonId, @PathVariable int wishlistId ) {
+        return pokemonService.deletePokemonFromWishlist(pokemonId, wishlistId);
+    }
 
     @DeleteMapping("deletepokemon/{id}")
     public String deletePokemon(@PathVariable String id) {

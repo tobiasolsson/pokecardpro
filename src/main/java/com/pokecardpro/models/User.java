@@ -19,16 +19,15 @@ public class User {
     private int streetNr;
     private String city;
     private int zipCode;
-    @ManyToMany
-    @JoinTable(name = "wishlist",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "poke_id"))
-    private Set<Pokemon> pokemons;
+
+    @OneToOne
+    @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
+    private Wishlist wishlist;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode, Set<Pokemon> pokemons) {
+    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -38,7 +37,6 @@ public class User {
         this.streetNr = streetNr;
         this.city = city;
         this.zipCode = zipCode;
-        this.pokemons = pokemons;
     }
 
 
@@ -120,13 +118,5 @@ public class User {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public Set<Pokemon> getPokemons() {
-        return pokemons;
-    }
-
-    public void setPokemons(Set<Pokemon> pokemons) {
-        this.pokemons = pokemons;
     }
 }
