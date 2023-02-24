@@ -2,8 +2,6 @@ package com.pokecardpro.models;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -27,7 +25,7 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode) {
+    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode, Wishlist wishlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -37,6 +35,7 @@ public class User {
         this.streetNr = streetNr;
         this.city = city;
         this.zipCode = zipCode;
+        this.wishlist = wishlist;
     }
 
 
@@ -118,5 +117,13 @@ public class User {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 }

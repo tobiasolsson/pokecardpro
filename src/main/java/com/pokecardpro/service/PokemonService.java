@@ -1,22 +1,26 @@
 package com.pokecardpro.service;
 
 import com.pokecardpro.models.Pokemon;
+import com.pokecardpro.models.User;
 import com.pokecardpro.models.Wishlist;
 import com.pokecardpro.repository.PokemonRepository;
+import com.pokecardpro.repository.UserRepository;
 import com.pokecardpro.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PokemonService {
     @Autowired
     PokemonRepository pokemonRepository;
-
     @Autowired
     WishlistRepository wishlistRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Transactional
     public String deletePokemonFromWishlist(int pokemonId, int wishlistId) {
@@ -53,5 +57,10 @@ public class PokemonService {
         pokemon.setWishlist(wishlist);
         pokemonRepository.save(pokemon);
         return pokemon;
+    }
+
+    public Set<Pokemon> getAllPokemonFromUserWishlist(String userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        return user.getWishlist().getPokemons();
     }
 }

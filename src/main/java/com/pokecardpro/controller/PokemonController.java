@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/")
@@ -46,5 +47,10 @@ public class PokemonController {
     @PostMapping("savePokemonToWishlist/{wishlistId}")
     public Pokemon savePokemonToWishlist(@RequestBody Pokemon pokemon, @PathVariable String wishlistId) {
         return pokemonService.savePokemonToWishlist(pokemon, wishlistId);
+    }
+
+    @GetMapping("pokemonFromWishlist/{userId}")
+    public Set<Pokemon> getAllPokemonFromUserWishlist(@PathVariable String userId) {
+        return pokemonService.getAllPokemonFromUserWishlist(userId);
     }
 }
