@@ -1,5 +1,6 @@
 package com.pokecardpro.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,7 @@ public class Pokemon {
     private String rarity;
     private int cardNumber;
     private String description;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
     private Wishlist wishlist;

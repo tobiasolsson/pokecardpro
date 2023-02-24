@@ -1,5 +1,6 @@
 package com.pokecardpro.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -15,6 +16,7 @@ public class Wishlist {
     @Column(name = "wishlist_name")
     private String name;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
     private Set<Pokemon> pokemons;
 

@@ -42,4 +42,9 @@ public class PokemonController {
     public String deletePokemon(@PathVariable String id) {
         return pokemonService.deletePokemon(id);
     }
+
+    @PostMapping("savePokemonToWishlist/{wishlistId}")
+    public Pokemon savePokemonToWishlist(@RequestBody Pokemon pokemon, @PathVariable String wishlistId) {
+        return pokemonService.savePokemonToWishlist(pokemon, wishlistId);
+    }
 }
