@@ -9,7 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -50,4 +52,11 @@ public class UserService {
     public String getUserEmail(String id) {
         return userRepository.findById(id).get().getEmail();
     }
+
+    public String getUserInformation(String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        return "Email: " + user.getEmail() + ", phone_number: " + user.getPhone();
+    }
 }
+

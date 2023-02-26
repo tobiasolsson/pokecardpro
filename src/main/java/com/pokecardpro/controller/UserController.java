@@ -42,4 +42,9 @@ public class UserController {
     public String getUserEmail(@PathVariable String id) {
         return userService.getUserEmail(id);
     }
+
+    @GetMapping("usercontact/{id}")
+    public String getUserInformation(@PathVariable String id) {
+        return userService.getUserInformation(id);
+    }
 }
