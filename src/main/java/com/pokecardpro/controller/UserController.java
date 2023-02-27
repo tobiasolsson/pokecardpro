@@ -43,6 +43,9 @@ public class UserController {
         return userService.getUserEmail(id);
     }
 
+    @GetMapping("userlocation/{id}")
+    public String getUserLocation(@PathVariable String id) { return userService.getUserlocation(id);}
+
     @GetMapping("usercontact/{id}")
     public String getUserInformation(@PathVariable String id) {
         return userService.getUserInformation(id);

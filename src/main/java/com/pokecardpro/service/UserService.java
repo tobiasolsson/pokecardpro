@@ -58,5 +58,9 @@ public class UserService {
         User user = userOptional.get();
         return "Email: " + user.getEmail() + ", phone_number: " + user.getPhone();
     }
+
+    public String getUserlocation(String id) {
+        return userRepository.findById(id).orElseThrow().getCity();
+    }
 }
 
