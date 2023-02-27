@@ -44,10 +44,15 @@ public class UserController {
     }
 
     @GetMapping("userlocation/{id}")
-    public String getUserLocation(@PathVariable String id) { return userService.getUserlocation(id);}
+    public String getUserLocation(@PathVariable String id) {return userService.getUserlocation(id);}
 
     @GetMapping("usercontact/{id}")
     public String getUserInformation(@PathVariable String id) {
         return userService.getUserInformation(id);
+    }
+
+    @GetMapping("auctionwinmessage")
+    public String getAuctionWinMessage() {
+        return userService.sendUserAuctionWinMessage();
     }
 }
