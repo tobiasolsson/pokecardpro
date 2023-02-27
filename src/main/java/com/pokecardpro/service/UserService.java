@@ -62,5 +62,9 @@ public class UserService {
     public String getUserlocation(String id) {
         return userRepository.findById(id).orElseThrow().getCity();
     }
+
+    public String sendUserAuctionWinMessage() {
+        return "You have won auction";
+    }
 }
 
