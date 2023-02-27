@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class AuctionService {
@@ -30,5 +32,16 @@ public class AuctionService {
 
     public List<Auction> getAllOldAuctions() {
         return auctionRepository.findAllAuctionsByStatusFalse();
+    }
+
+    public List<Auction> getAllAuctionsOfPokemon(String pokemonName) {
+        // look into auction->card->pokemon and check if pokemon name == pokemonName argument
+        Predicate<Auction> predicate =
+                auction -> auction.getCardId().getPokemon().getName().equalsIgnoreCase(pokemonName);
+
+        // loop through all active auctions, run above lambda function and create new list of auctions with same pokemon
+        return getAllActiveAuctions().stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 }

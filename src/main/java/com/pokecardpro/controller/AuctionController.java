@@ -51,4 +51,9 @@ public class AuctionController {
     public Auction getAuctionById(@PathVariable String id) {
         return auctionService.getAuctionById(id);
     }
+
+    @GetMapping("auction/pokemon/{pokemonName}")
+    public List<Auction> getAllAuctionsOfPokemon(@PathVariable String pokemonName) {
+        return auctionService.getAllAuctionsOfPokemon(pokemonName);
+    }
 }
