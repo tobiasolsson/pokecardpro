@@ -1,7 +1,11 @@
 package com.pokecardpro.service;
 
 import com.pokecardpro.models.Auction;
+import com.pokecardpro.models.Card;
+import com.pokecardpro.models.User;
 import com.pokecardpro.repository.AuctionRepository;
+import com.pokecardpro.repository.CardRepository;
+import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,10 @@ import java.util.stream.Collectors;
 public class AuctionService {
     @Autowired
     AuctionRepository auctionRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CardRepository cardRepository;
 
     public Auction createAuction(Auction auction) {
         // get current timestamp
@@ -22,6 +30,17 @@ public class AuctionService {
         // set dates in object
         auction.setStartDate(Timestamp.valueOf(currentTime));
         auction.setEndDate(Timestamp.valueOf(currentTime.plusDays(7)));
+
+        // get actual user from userId in auction and set it in auction
+        String userId = Integer.toString(auction.getUserId().getId());
+        User user = userRepository.findById(userId).get();
+        auction.setUserId(user);
+
+        // get actual car from cardId and set in auction
+        String cardId = Integer.toString(auction.getCardId().getId());
+        Card card = cardRepository.findById(cardId).get();
+        auction.setCardId(card);
+
 
         return auctionRepository.save(auction);
     }
