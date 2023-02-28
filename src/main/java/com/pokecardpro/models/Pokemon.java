@@ -25,7 +25,8 @@ public class Pokemon {
     public Pokemon() {
     }
 
-    public Pokemon(String name, String image, String set, String rarity, int cardNumber, String description, Wishlist wishlist) {
+    public Pokemon(String name, String image, String set, String rarity, int cardNumber, String description,
+                   Wishlist wishlist) {
         this.name = name;
         this.image = image;
         this.set = set;
@@ -33,6 +34,10 @@ public class Pokemon {
         this.cardNumber = cardNumber;
         this.description = description;
         this.wishlist = wishlist;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
