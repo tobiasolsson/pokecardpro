@@ -5,6 +5,8 @@ import com.pokecardpro.repository.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -15,6 +17,12 @@ public class AuctionService {
     AuctionRepository auctionRepository;
 
     public Auction createAuction(Auction auction) {
+        // get current timestamp
+        LocalDateTime currentTime = LocalDateTime.now();
+        // set dates in object
+        auction.setStartDate(Timestamp.valueOf(currentTime));
+        auction.setEndDate(Timestamp.valueOf(currentTime.plusDays(7)));
+
         return auctionRepository.save(auction);
     }
 
@@ -41,7 +49,7 @@ public class AuctionService {
 
         // loop through all active auctions, run above lambda function and create new list of auctions with same pokemon
         return getAllActiveAuctions().stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
+                                     .filter(predicate)
+                                     .collect(Collectors.toList());
     }
 }
