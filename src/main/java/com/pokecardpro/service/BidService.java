@@ -12,5 +12,6 @@ public class BidService {
 
     public Bids placeBid (Bids bids) {
         return bidsRepository.save(bids);
+
     }
 }
