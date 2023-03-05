@@ -49,8 +49,8 @@ public class PokemonController {
         return pokemonService.savePokemonToWishlist(pokemon, wishlistId);
     }
 
-    @GetMapping("pokemonFromWishlist/{userId}")
+    /*@GetMapping("pokemonFromWishlist/{userId}")
     public Set<Pokemon> getAllPokemonFromUserWishlist(@PathVariable String userId) {
         return pokemonService.getAllPokemonFromUserWishlist(userId);
-    }
+    }*/
 }

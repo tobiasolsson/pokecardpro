@@ -1,10 +1,16 @@
 package com.pokecardpro.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -18,14 +24,20 @@ public class User {
     private String city;
     private int zipCode;
 
-    @OneToOne
+    // Take string value from enum, instead of a number
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    /*@OneToOne
     @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
-    private Wishlist wishlist;
+    private Wishlist wishlist;*/
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, int phone, String street, int streetNr, String city, int zipCode, Wishlist wishlist) {
+    public User(String firstName, String lastName, String email, String password, int phone, String street,
+                int streetNr,
+                String city, int zipCode, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -35,9 +47,16 @@ public class User {
         this.streetNr = streetNr;
         this.city = city;
         this.zipCode = zipCode;
-        this.wishlist = wishlist;
+        this.role = role;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public int getId() {
         return id;
@@ -71,8 +90,39 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -117,13 +167,5 @@ public class User {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
     }
 }
