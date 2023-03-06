@@ -38,7 +38,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateUser(User user) {
+
+    // Fyll i alla fält i postman vid uppdatering.
+    public User updateUser(User user, String id) {
         String encodedPassword = this.passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         return userRepository.save(user);
