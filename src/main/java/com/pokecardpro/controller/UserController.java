@@ -28,9 +28,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("updateuser")
-    public User updateSingleUser(@RequestBody User user) {
-        return userService.updateUser(user);
+
+    @RequestMapping(method = RequestMethod.PUT, value = "updateuser/{id}")
+    public User updateLeader(@RequestBody User user, @PathVariable String id) {
+        return userService.updateUser(user, id);
     }
 
     @DeleteMapping("deleteuser/{id}")
