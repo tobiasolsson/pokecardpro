@@ -59,8 +59,8 @@ public class PokemonService {
         return pokemon;
     }
 
-    /*public Set<Pokemon> getAllPokemonFromUserWishlist(String userId) {
+    public Set<Pokemon> getAllPokemonFromUserWishlist(String userId) {
         User user = userRepository.findById(userId).orElseThrow();
         return user.getWishlist().getPokemons();
-    }*/
+    }
 }

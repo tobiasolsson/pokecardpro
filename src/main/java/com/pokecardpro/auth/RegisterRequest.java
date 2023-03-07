@@ -12,7 +12,7 @@ public class RegisterRequest {
     private int streetNr;
     private String city;
     private int zipCode;
-    /*private Wishlist wishlist;*/
+    private Wishlist wishlist;
 
     public String getFirstName() {
         return firstName;
@@ -86,16 +86,16 @@ public class RegisterRequest {
         this.zipCode = zipCode;
     }
 
-    /*public Wishlist getWishlist() {
+    public Wishlist getWishlist() {
         return wishlist;
     }
 
     public void setWishlist(Wishlist wishlist) {
         this.wishlist = wishlist;
-    }*/
+    }
 
     public RegisterRequest(String firstName, String lastName, String email, String password, int phone, String street,
-                           int streetNr, String city, int zipCode) {
+                           int streetNr, String city, int zipCode, Wishlist wishlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -105,6 +105,7 @@ public class RegisterRequest {
         this.streetNr = streetNr;
         this.city = city;
         this.zipCode = zipCode;
+        this.wishlist = wishlist;
     }
 
     public RegisterRequest() {

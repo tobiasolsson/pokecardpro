@@ -42,7 +42,7 @@ public class Auction {
 
     private Boolean pickUp;
 
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Shipping shipping;
 
     private int shippingCost;

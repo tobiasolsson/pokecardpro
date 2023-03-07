@@ -28,16 +28,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    /*@OneToOne
+    @OneToOne
     @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
-    private Wishlist wishlist;*/
+    private Wishlist wishlist;
 
     public User() {
     }
 
     public User(String firstName, String lastName, String email, String password, int phone, String street,
                 int streetNr,
-                String city, int zipCode, Role role) {
+                String city, int zipCode, Role role, Wishlist wishlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -48,6 +48,7 @@ public class User implements UserDetails {
         this.city = city;
         this.zipCode = zipCode;
         this.role = role;
+        this.wishlist = wishlist;
     }
 
     public Role getRole() {
@@ -167,5 +168,13 @@ public class User implements UserDetails {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 }
