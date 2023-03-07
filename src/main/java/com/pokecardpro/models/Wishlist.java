@@ -28,7 +28,6 @@ public class Wishlist {
         this.pokemons = pokemons;
     }
 
-
     public String getName() {
         return name;
     }
