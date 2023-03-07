@@ -40,7 +40,8 @@ public class AuthenticationService {
                 request.getStreetNr(),
                 request.getCity(),
                 request.getZipCode(),
-                Role.USER
+                Role.USER,
+                request.getWishlist()
         );
         repository.save(user);
         String token = jwtService.generateToken(user);
