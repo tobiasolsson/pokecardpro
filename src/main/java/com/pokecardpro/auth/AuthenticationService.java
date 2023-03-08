@@ -64,4 +64,11 @@ public class AuthenticationService {
                              .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                              .body(new AuthenticationRequest(request.getEmail(), request.getPassword()));
     }
+
+    public boolean getHasAccess(String id) {
+        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        String suppliedUserEmail = repository.findById(id).get().getEmail();
+
+        return authenticatedUserEmail.equalsIgnoreCase(suppliedUserEmail);
+    }
 }

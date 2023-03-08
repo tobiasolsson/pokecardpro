@@ -1,5 +1,6 @@
 package com.pokecardpro.service;
 
+import com.pokecardpro.auth.AuthenticationService;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -31,6 +35,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id)")
     public User getUserById(String id) {
         return userRepository.findById(id).get();
     }
