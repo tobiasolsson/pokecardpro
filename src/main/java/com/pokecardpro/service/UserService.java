@@ -35,7 +35,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @PreAuthorize("@authenticationService.getHasAccess(#id)")
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     public User getUserById(String id) {
         return userRepository.findById(id).get();
     }
