@@ -46,6 +46,7 @@ public class UserService {
     }
 
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     // Fyll i alla fält i postman vid uppdatering.
     public User updateUser(User user, String id) {
         String encodedPassword = this.passwordEncoder.encode(user.getPassword());
@@ -53,6 +54,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     public String deleteUser(String id) {
         userRepository.deleteById(id);
         return "User " + id + " has been deleted!";
