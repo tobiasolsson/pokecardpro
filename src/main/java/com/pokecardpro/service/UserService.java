@@ -3,6 +3,7 @@ package com.pokecardpro.service;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
