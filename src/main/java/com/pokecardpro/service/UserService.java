@@ -1,8 +1,10 @@
 package com.pokecardpro.service;
 
+import com.pokecardpro.auth.AuthenticationService;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,9 @@ public class UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -30,15 +35,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     public User getUserById(String id) {
         return userRepository.findById(id).get();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     // Fyll i alla fält i postman vid uppdatering.
     public User updateUser(User user, String id) {
         String encodedPassword = this.passwordEncoder.encode(user.getPassword());
@@ -46,6 +54,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     public String deleteUser(String id) {
         userRepository.deleteById(id);
         return "User " + id + " has been deleted!";
