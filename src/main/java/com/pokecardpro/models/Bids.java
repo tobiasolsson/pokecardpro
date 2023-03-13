@@ -1,9 +1,10 @@
 package com.pokecardpro.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bid")
@@ -21,6 +22,7 @@ public class Bids {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp created;
 
     private int amount;
