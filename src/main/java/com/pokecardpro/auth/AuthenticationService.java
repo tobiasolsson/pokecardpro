@@ -5,6 +5,7 @@ import com.pokecardpro.models.Role;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,40 +30,41 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<String> register(RegisterRequest request) {
         User user = new User(
-                request.getFirstName(),
-                request.getLastName(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                request.getPhone(),
-                request.getStreet(),
-                request.getStreetNr(),
-                request.getCity(),
-                request.getZipCode(),
+                request.firstName(),
+                request.lastName(),
+                request.email(),
+                passwordEncoder.encode(request.password()),
+                request.phone(),
+                request.street(),
+                request.streetNr(),
+                request.city(),
+                request.zipCode(),
                 Role.USER,
-                request.getWishlist()
+                request.wishlist()
         );
         repository.save(user);
-        String token = jwtService.generateToken(user);
+        //String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
+        //return new AuthenticationResponse(token);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful!");
     }
 
     public ResponseEntity<AuthenticationRequest> authenticate(AuthenticationRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = repository.findByEmail(request.getEmail()).orElseThrow();
+        User user = repository.findByEmail(request.email()).orElseThrow();
 
         ResponseCookie responseCookie = jwtService.generateJwtCookie(user);
 
         return ResponseEntity.ok()
                              .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                             .body(new AuthenticationRequest(request.getEmail(), request.getPassword()));
+                             .body(new AuthenticationRequest(request.email(), request.password()));
     }
 
     public boolean getHasAccess(String id) {
