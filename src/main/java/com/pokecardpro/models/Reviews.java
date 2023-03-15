@@ -7,57 +7,50 @@ import jakarta.persistence.*;
 public class Reviews {
 
     @Id
-    @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "comment_owner", referencedColumnName = "id")
-    private User comment_Owner;
+    private User commentOwner;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "comment_reciver", referencedColumnName = "id")
-    private User comment_Reciver;
+    @JoinColumn(name = "comment_receiver", referencedColumnName = "id")
+    private User commentReceiver;
 
     private String comment;
 
-    private int grade_Seller;
+    @Column(name = "grade_seller")
+    private int gradeSeller;
 
-    private int grade_Buyer;
+    @Column(name = "grade_buyer")
+    private int gradeBuyer;
 
     public Reviews() {
     }
 
-    public Reviews(String id, User comment_Owner, User comment_Reciver, String comment, int grade_Seller, int grade_Buyer) {
-        this.id = id;
-        this.comment_Owner = comment_Owner;
-        this.comment_Reciver = comment_Reciver;
-        this.comment = comment;
-        this.grade_Seller = grade_Seller;
-        this.grade_Buyer = grade_Buyer;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public User getComment_Owner() {
-        return comment_Owner;
+    public User getCommentOwner() {
+        return commentOwner;
     }
 
-    public void setComment_Owner(User comment_Owner) {
-        this.comment_Owner = comment_Owner;
+    public void setCommentOwner(User commentOwner) {
+        this.commentOwner = commentOwner;
     }
 
-    public User getComment_Reciver() {
-        return comment_Reciver;
+    public User getCommentReceiver() {
+        return commentReceiver;
     }
 
-    public void setComment_Reciver(User comment_Reciver) {
-        this.comment_Reciver = comment_Reciver;
+    public void setCommentReceiver(User commentReceiver) {
+        this.commentReceiver = commentReceiver;
     }
 
     public String getComment() {
@@ -68,19 +61,27 @@ public class Reviews {
         this.comment = comment;
     }
 
-    public int getGrade_Seller() {
-        return grade_Seller;
+    public int getGradeSeller() {
+        return gradeSeller;
     }
 
-    public void setGrade_Seller(int grade_Seller) {
-        this.grade_Seller = grade_Seller;
+    public void setGradeSeller(int gradeSeller) {
+        this.gradeSeller = gradeSeller;
     }
 
-    public int getGrade_Buyer() {
-        return grade_Buyer;
+    public int getGradeBuyer() {
+        return gradeBuyer;
     }
 
-    public void setGrade_Buyer(int grade_Buyer) {
-        this.grade_Buyer = grade_Buyer;
+    public void setGradeBuyer(int gradeBuyer) {
+        this.gradeBuyer = gradeBuyer;
+    }
+
+    public Reviews(User commentOwner, User commentReceiver, String comment, int gradeSeller, int gradeBuyer) {
+        this.commentOwner = commentOwner;
+        this.commentReceiver = commentReceiver;
+        this.comment = comment;
+        this.gradeSeller = gradeSeller;
+        this.gradeBuyer = gradeBuyer;
     }
 }
