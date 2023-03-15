@@ -2,9 +2,11 @@ package com.pokecardpro.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "auction")
@@ -21,6 +23,11 @@ public class Auction {
     @OneToOne(cascade = {CascadeType.ALL}, targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
+
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Bids.class, mappedBy = "auction")
+    //@JoinColumn(name = "bid_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private List<Bids> bids;
 
     private String title;
 
@@ -52,11 +59,13 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(Card cardId, User userId, String title, String description, boolean status, int buyNow,
+    public Auction(Card cardId, User userId, List<Bids> bids, String title, String description, boolean status,
+                   int buyNow,
                    int reservedPrice, Timestamp startDate, Timestamp endDate, Boolean pickUp, Shipping shipping,
                    int shippingCost, int endBid) {
         this.cardId = cardId;
         this.userId = userId;
+        this.bids = bids;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -68,22 +77,6 @@ public class Auction {
         this.shipping = shipping;
         this.shippingCost = shippingCost;
         this.endBid = endBid;
-    }
-
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public int getShippingCost() {
-        return shippingCost;
-    }
-
-    public void setShippingCost(int shippingCost) {
-        this.shippingCost = shippingCost;
     }
 
     public int getId() {
@@ -108,6 +101,14 @@ public class Auction {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+
+    public List<Bids> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bids> bids) {
+        this.bids = bids;
     }
 
     public String getTitle() {
@@ -150,6 +151,14 @@ public class Auction {
         this.reservedPrice = reservedPrice;
     }
 
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
     public Timestamp getEndDate() {
         return endDate;
     }
@@ -172,6 +181,14 @@ public class Auction {
 
     public void setShipping(Shipping shipping) {
         this.shipping = shipping;
+    }
+
+    public int getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(int shippingCost) {
+        this.shippingCost = shippingCost;
     }
 
     public int getEndBid() {

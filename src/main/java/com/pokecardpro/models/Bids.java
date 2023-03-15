@@ -1,6 +1,7 @@
 package com.pokecardpro.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -14,8 +15,9 @@ public class Bids {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(targetEntity = Auction.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", referencedColumnName = "id")
+    @JsonBackReference
     private Auction auction;
 
     @OneToOne(targetEntity = User.class)
