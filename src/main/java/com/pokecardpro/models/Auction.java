@@ -1,6 +1,7 @@
 package com.pokecardpro.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -56,13 +57,26 @@ public class Auction {
 
     private int endBid;
 
+    @ManyToOne(targetEntity = Watchlist.class)
+    @JoinColumn(name = "watchlist_id", referencedColumnName = "id")
+    @JsonBackReference
+    private Watchlist watchlist;
+
     public Auction() {
+    }
+
+    public Watchlist getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(Watchlist watchlist) {
+        this.watchlist = watchlist;
     }
 
     public Auction(Card cardId, User userId, List<Bids> bids, String title, String description, boolean status,
                    int buyNow,
                    int reservedPrice, Timestamp startDate, Timestamp endDate, Boolean pickUp, Shipping shipping,
-                   int shippingCost, int endBid) {
+                   int shippingCost, int endBid, Watchlist watchlist) {
         this.cardId = cardId;
         this.userId = userId;
         this.bids = bids;
@@ -77,6 +91,7 @@ public class Auction {
         this.shipping = shipping;
         this.shippingCost = shippingCost;
         this.endBid = endBid;
+        this.watchlist = watchlist;
     }
 
     public int getId() {
