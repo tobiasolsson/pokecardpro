@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BidService {
@@ -35,22 +37,52 @@ public class BidService {
         String auctionId = Integer.toString(bids.getAuction().getId());
         String userId = Integer.toString(bids.getUser().getId());
 
-        // get user and auction
-        Auction auction = auctionRepository.findById(auctionId).get();
-        User user = userRepository.findById(userId).get();
+        try {
+            // get user and auction
+            Auction auction = auctionRepository.findById(auctionId).orElseThrow(
+                    () -> new NoSuchElementException("Auction not found with id: " + auctionId)
+            );
+            User user = userRepository.findById(userId).orElseThrow(
+                    () -> new NoSuchElementException("User not found with id: " + userId)
+            );
 
-        boolean auctionStatus = auction.isStatus();
+            boolean auctionStatus = auction.isStatus();
 
-        // set user and auction in bids
-        bids.setAuction(auction);
-        bids.setUser(user);
+            // set user and auction in bids
+            bids.setAuction(auction);
+            bids.setUser(user);
 
 
-        if (auctionStatus) {
-            bidsRepository.save(bids);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Bid successfully placed!");
-        } else {
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Bid not placed!");
+            if (auctionStatus) {
+                // save bids to list in auction only, if we also save in bids we get double save!
+                auction.getBids().add(bids);
+                auctionRepository.save(auction);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Bid successfully placed!");
+            } else {
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Bid not placed!");
+            }
+        } catch (NoSuchElementException e) {
+            String errorMessage = "";
+            if (e.getMessage().contains("Auction")) {
+                errorMessage = "Auction not found with id: " + auctionId;
+            } else if (e.getMessage().contains("User")) {
+                errorMessage = "User not found with id: " + userId;
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(errorMessage);
+        }
+    }
+
+    public ResponseEntity<List<Bids>> getBidsByAuction(String id) {
+        try {
+            Auction auction = auctionRepository.findById(id).orElseThrow(
+                    () -> new NoSuchElementException("Auction not found with id: " + id)
+            );
+            List<Bids> bidsInAuction = auction.getBids();
+
+            return ResponseEntity.ok().body(bidsInAuction);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
