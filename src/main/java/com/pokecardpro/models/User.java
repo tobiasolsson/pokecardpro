@@ -1,5 +1,7 @@
 package com.pokecardpro.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +30,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    //@JoinColumn(name = "watchlist_id")
+    @JsonBackReference
+    private Watchlist watchlist;
+
     @OneToOne
     @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
     private Wishlist wishlist;
@@ -35,9 +42,17 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public Watchlist getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(Watchlist watchlist) {
+        this.watchlist = watchlist;
+    }
+
     public User(String firstName, String lastName, String email, String password, int phone, String street,
                 int streetNr,
-                String city, int zipCode, Role role, Wishlist wishlist) {
+                String city, int zipCode, Role role, Watchlist watchlist, Wishlist wishlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -48,6 +63,7 @@ public class User implements UserDetails {
         this.city = city;
         this.zipCode = zipCode;
         this.role = role;
+        this.watchlist = watchlist;
         this.wishlist = wishlist;
     }
 

@@ -1,4 +1,5 @@
 package com.pokecardpro.controller;
+import com.pokecardpro.models.Auction;
 import com.pokecardpro.models.Watchlist;
 import com.pokecardpro.service.WatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,14 @@ public class WatchlistController {
     @Autowired
     WatchlistService watchlistService;
 
-    @PostMapping("watchlist")
-    public Watchlist saveAuctionToWatchlist(@RequestBody Watchlist watchlist) {
-        return watchlistService.saveAuction(watchlist);
+    @PostMapping("watchlist/{userId}/{auctionId}")
+    public Watchlist saveAuctionToWatchlist(@PathVariable String userId, @PathVariable String auctionId) {
+        return watchlistService.saveAuctionToWatchlist(userId, auctionId);
     }
 
-    @GetMapping("watchlist")
-    public List<Watchlist> getAllAuctionsInWatchlist() {
-        return watchlistService.getAllAuctionsInWatchlist();
+    @GetMapping("watchlist/{id}")
+    public List<Auction> getAllAuctionsInWatchlist(@PathVariable String id) {
+        return watchlistService.getUsersWatchlist(id);
     }
 
     @DeleteMapping("delete/{id}")

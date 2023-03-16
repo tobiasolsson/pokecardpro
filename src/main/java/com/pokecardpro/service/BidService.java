@@ -8,6 +8,7 @@ import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -27,6 +28,7 @@ public class BidService {
     @Autowired
     UserRepository userRepository;
 
+    @PreAuthorize("@authenticationService.getHasAccess(#bids.user.id)")
     public ResponseEntity<String> placeBid (Bids bids) {
         // get current timestamp
         LocalDateTime currentTime = LocalDateTime.now();
