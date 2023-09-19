@@ -7,6 +7,7 @@ import com.pokecardpro.repository.AuctionRepository;
 import com.pokecardpro.repository.UserRepository;
 import com.pokecardpro.repository.WatchlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -16,31 +17,36 @@ import java.util.NoSuchElementException;
 
 @Service
 public class WatchlistService {
+    private final WatchlistRepository watchlistRepository;
+    private final UserRepository userRepository;
+    private final AuctionRepository auctionRepository;
 
-    @Autowired
-    WatchlistRepository watchlistRepository;
+    public WatchlistService(WatchlistRepository watchlistRepository, UserRepository userRepository, AuctionRepository auctionRepository) {
+        this.watchlistRepository = watchlistRepository;
+        this.userRepository = userRepository;
+        this.auctionRepository = auctionRepository;
+    }
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    AuctionRepository auctionRepository;
 
     @PreAuthorize("@authenticationService.getHasAccess(#userId)")
-    public Watchlist saveAuctionToWatchlist(String userId, String auctionId) {
-        User user = userRepository.findById(userId).get();
+    public ResponseEntity<String> saveAuctionToWatchlist(String userId, String auctionId) {
+        try {
+            User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
 
-        Auction auction = auctionRepository.findById(auctionId).get();
+            Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new NoSuchElementException("Auction not found with id: " + auctionId));
 
-        if (user.getWatchlist() == null || user.getWatchlist().getAuctions().isEmpty()) {
-            Watchlist watchlist = new Watchlist(new ArrayList<>(), user);
-            user.setWatchlist(watchlist);
+            if (user.getWatchlist() == null || user.getWatchlist().getAuctions().isEmpty()) {
+                Watchlist watchlist = new Watchlist(new ArrayList<>(), user);
+                user.setWatchlist(watchlist);
+            }
+
+            Watchlist watchlist = user.getWatchlist();
+
+            watchlist.getAuctions().add(auction);
+            return ResponseEntity.ok("Saved auction: " + auction.getId() + " to watchlist");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Something went wrong, error message: " + e.getMessage());
         }
-
-        Watchlist watchlist = user.getWatchlist();
-
-        watchlist.getAuctions().add(auction);
-        return watchlistRepository.save(watchlist);
     }
 
     @PreAuthorize("@authenticationService.getHasAccess(#id)")

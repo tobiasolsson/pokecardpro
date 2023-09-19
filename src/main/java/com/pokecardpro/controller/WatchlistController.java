@@ -13,10 +13,10 @@ public class WatchlistController {
     @Autowired
     WatchlistService watchlistService;
 
-    @PostMapping("watchlist/{userId}/{auctionId}")
+   /* @PostMapping("watchlist/{userId}/{auctionId}")
     public Watchlist saveAuctionToWatchlist(@PathVariable String userId, @PathVariable String auctionId) {
         return watchlistService.saveAuctionToWatchlist(userId, auctionId);
-    }
+    }*/
 
     @GetMapping("watchlist/{id}")
     public List<Auction> getAllAuctionsInWatchlist(@PathVariable String id) {

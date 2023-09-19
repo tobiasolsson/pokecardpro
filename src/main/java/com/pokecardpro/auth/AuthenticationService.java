@@ -52,7 +52,7 @@ public class AuthenticationService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful!");
     }
 
-    public ResponseEntity<AuthenticationRequest> authenticate(AuthenticationRequest request) {
+    public ResponseEntity<String> authenticate(AuthenticationRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
@@ -65,7 +65,7 @@ public class AuthenticationService {
 
         return ResponseEntity.ok()
                              .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                             .body(new AuthenticationRequest(request.email(), request.password()));
+                             .body("login successful");
     }
 
     public boolean getHasAccess(String id) {
