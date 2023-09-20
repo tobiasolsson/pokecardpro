@@ -18,7 +18,10 @@ public class User implements UserDetails {
     private int id;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
     private int phone;
     private String street;
