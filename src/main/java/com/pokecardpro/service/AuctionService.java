@@ -32,7 +32,7 @@ public class AuctionService {
         this.cardRepository = cardRepository;
     }
 
-    @PreAuthorize("@auctionService.getHasAccess(#auction.userId.id)")
+    @PreAuthorize("@authenticationService.getHasAccess(#auction.userId.id)")
     public ResponseEntity<String> createAuction(Auction auction) {
         // get current timestamp
         LocalDateTime currentTime = LocalDateTime.now();
