@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -28,16 +29,21 @@ public class BidService {
     @Autowired
     UserRepository userRepository;
 
-    @PreAuthorize("@authenticationService.getHasAccess(#bids.user.id)")
+    //@PreAuthorize("@authenticationService.getHasAccess(#bids.user.id)") // behövs inte om vi hämtar user id från securitycontext?
     public ResponseEntity<String> placeBid (Bids bids) {
         // get current timestamp
         LocalDateTime currentTime = LocalDateTime.now();
         // set dates in object
         bids.setCreated(Timestamp.valueOf(currentTime));
 
-        // get the provided ids
+        // get the ids of user and auctions
         String auctionId = Integer.toString(bids.getAuction().getId());
-        String userId = Integer.toString(bids.getUser().getId());
+
+        // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
+        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
+                () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
+        String userId = String.valueOf(userAuth.getId());
 
         try {
             // get user and auction

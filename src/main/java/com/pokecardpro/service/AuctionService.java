@@ -1,6 +1,7 @@
 package com.pokecardpro.service;
 
 import com.pokecardpro.models.Auction;
+import com.pokecardpro.models.Bids;
 import com.pokecardpro.models.Card;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.AuctionRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -101,4 +103,18 @@ public class AuctionService {
         return ResponseEntity.ok(pokemonAuctions);
     }
 
+    public ResponseEntity<Integer> getHighestBidInAuction(String id) {
+        try {
+            Auction auction = getAuctionById(id).getBody();
+            List<Bids> bids = auction.getBids();
+
+            Bids highestBid = bids.stream()
+                    .max(Comparator.comparing(Bids::getAmount))
+                    .orElse(null);
+
+            return ResponseEntity.ok(bids.isEmpty() ? 0 : highestBid.getAmount());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(0);
+        }
+    }
 }
