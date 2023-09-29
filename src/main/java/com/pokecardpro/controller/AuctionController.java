@@ -34,7 +34,7 @@ public class AuctionController {
         return auctionService.getAllOldAuctions();
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin()
     @GetMapping("auction/{id}")
     public ResponseEntity<Auction> getAuctionById(@PathVariable String id) {
         return auctionService.getAuctionById(id);
