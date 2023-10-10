@@ -39,6 +39,7 @@ public class BidService {
         // get the ids of user and auctions
         String auctionId = Integer.toString(bids.getAuction().getId());
 
+        // TODO: Break out to own function, used multiple places
         // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
         String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(

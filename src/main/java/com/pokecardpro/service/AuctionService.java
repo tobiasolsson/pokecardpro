@@ -10,6 +10,7 @@ import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -34,7 +35,7 @@ public class AuctionService {
         this.cardRepository = cardRepository;
     }
 
-    @PreAuthorize("@authenticationService.getHasAccess(#auction.userId.id)")
+    //@PreAuthorize("@authenticationService.getHasAccess(#auction.userId.id)")
     public ResponseEntity<String> createAuction(Auction auction) {
         // get current timestamp
         LocalDateTime currentTime = LocalDateTime.now();
@@ -44,7 +45,15 @@ public class AuctionService {
 
         try {
             // get actual user from userId in auction and set it in auction
-            String userId = Integer.toString(auction.getUserId().getId());
+            //String userId = Integer.toString(auction.getUserId().getId());
+
+            // TODO: Break out to own function, used multiple places
+            // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
+            String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+            User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
+                    () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
+            String userId = String.valueOf(userAuth.getId());
+
             User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found with id " + userId));
             auction.setUserId(user);
 
