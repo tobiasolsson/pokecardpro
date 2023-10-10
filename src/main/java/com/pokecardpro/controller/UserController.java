@@ -23,6 +23,11 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("current-user")
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
     @GetMapping("alluser")
     public List<User> getAllUsers() {
         return userService.getAllUsers();

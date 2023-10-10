@@ -5,6 +5,7 @@ import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -76,6 +78,18 @@ public class UserService {
 
     public String sendUserAuctionWinMessage() {
         return "You have won auction";
+    }
+
+    public User getCurrentUser() {
+
+        // TODO: Break out to own function, used multiple places
+        // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
+        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
+                () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
+        String userId = String.valueOf(userAuth.getId());
+
+        return userRepository.findById(userId).get();
     }
 }
 
