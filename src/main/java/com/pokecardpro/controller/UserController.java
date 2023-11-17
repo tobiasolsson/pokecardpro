@@ -3,6 +3,7 @@ package com.pokecardpro.controller;
 import com.pokecardpro.models.User;
 import com.pokecardpro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("current-user")
-    public User getCurrentUser() {
+    public ResponseEntity<?> getCurrentUser() {
         return userService.getCurrentUser();
     }
 

@@ -1,18 +1,17 @@
 package com.pokecardpro.service;
 
 import com.pokecardpro.auth.AuthenticationService;
+import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -37,17 +36,40 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
-    public User getUserById(String id) {
-        return userRepository.findById(id).get();
+    public UserDTO convertUserToUserDTO(User user) {
+        return new UserDTO(user.getFirstName(),
+                           user.getLastName(),
+                           user.getEmail(),
+                           user.getPhone(),
+                           user.getStreet(),
+                           user.getStreetNr(),
+                           user.getCity(),
+                           user.getZipCode());
     }
 
+    @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
+    public ResponseEntity<?> getUserById(String id) {
+        try {
+            User currentUser = userRepository.findById(id).orElseThrow();
+            UserDTO currentUserDTO = convertUserToUserDTO(currentUser);
+
+            return ResponseEntity.ok().body(currentUserDTO);
+
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+
+        }
+    }
+
+    // TODO: return list of UserDTO
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
 
+    // TODO: return 'user succesfully updated' eller UserDTO?
     @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     // Fyll i alla fält i postman vid uppdatering.
     public User updateUser(User user, String id) {
@@ -56,22 +78,26 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // TODO: Hantera om inte användare finns?
     @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
     public String deleteUser(String id) {
         userRepository.deleteById(id);
         return "User " + id + " has been deleted!";
     }
 
+    // TODO: Hantera om inte användare finns?
     public String getUserEmail(String id) {
         return userRepository.findById(id).get().getEmail();
     }
 
+    // TODO: Hantera om inte användare finns?
     public String getUserInformation(String id) {
         Optional<User> userOptional = userRepository.findById(id);
         User user = userOptional.get();
         return "Email: " + user.getEmail() + ", phone_number: " + user.getPhone();
     }
 
+    // TODO: Hantera om inte användare finns?
     public String getUserlocation(String id) {
         return userRepository.findById(id).orElseThrow().getCity();
     }
@@ -80,16 +106,25 @@ public class UserService {
         return "You have won auction";
     }
 
-    public User getCurrentUser() {
+    public ResponseEntity<?> getCurrentUser() {
 
-        // TODO: Break out to own function, used multiple places
-        // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
-        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
-                () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
-        String userId = String.valueOf(userAuth.getId());
+        try {
+            // TODO: Break out to own function, used multiple places
+            // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
+            String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+            User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
+                    () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
+            String userId = String.valueOf(userAuth.getId());
 
-        return userRepository.findById(userId).get();
+
+            User currentUser = userRepository.findById(userId).orElseThrow();
+            UserDTO currentUserDTO = convertUserToUserDTO(currentUser);
+
+            return ResponseEntity.ok().body(currentUserDTO);
+
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
 
