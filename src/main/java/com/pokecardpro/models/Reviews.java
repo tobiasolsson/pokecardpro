@@ -57,16 +57,25 @@ public class Reviews {
         return comment;
     }
 
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public int getGradeSeller() {
         return gradeSeller;
     }
 
+    public void setGradeSeller(int gradeSeller) {
+        this.gradeSeller = gradeSeller;
+    }
 
     public int getGradeBuyer() {
         return gradeBuyer;
     }
 
+    public void setGradeBuyer(int gradeBuyer) {
+        this.gradeBuyer = gradeBuyer;
+    }
 
     public Reviews(User commentOwner, User commentReceiver, String comment, int gradeSeller, int gradeBuyer) {
         this.commentOwner = commentOwner;

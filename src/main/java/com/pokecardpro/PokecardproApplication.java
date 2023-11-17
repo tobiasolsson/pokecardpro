@@ -9,4 +9,5 @@ public class PokecardproApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PokecardproApplication.class, args);
 	}
+
 }
