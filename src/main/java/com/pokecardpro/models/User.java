@@ -74,9 +74,6 @@ public class User implements UserDetails {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public int getId() {
         return id;
@@ -90,25 +87,16 @@ public class User implements UserDetails {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -153,47 +141,29 @@ public class User implements UserDetails {
         return phone;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
 
     public String getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
 
     public int getStreetNr() {
         return streetNr;
     }
 
-    public void setStreetNr(int streetNr) {
-        this.streetNr = streetNr;
-    }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public int getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
-        this.zipCode = zipCode;
-    }
 
     public Wishlist getWishlist() {
         return wishlist;
     }
 
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
-    }
 }
