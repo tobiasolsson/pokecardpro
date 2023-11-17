@@ -14,7 +14,6 @@ public class AuctionController {
     @Autowired
     AuctionService auctionService;
 
-    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("auction")
     public ResponseEntity<String> createAuction(@RequestBody Auction auction) {
         return auctionService.createAuction(auction);

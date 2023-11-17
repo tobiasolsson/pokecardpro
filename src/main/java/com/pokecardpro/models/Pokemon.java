@@ -44,31 +44,49 @@ public class Pokemon {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getImage() {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getSet() {
         return set;
     }
 
+    public void setSet(String set) {
+        this.set = set;
+    }
 
     public String getRarity() {
         return rarity;
     }
 
+    public void setRarity(String rarity) {
+        this.rarity = rarity;
+    }
 
     public int getCardNumber() {
         return cardNumber;
     }
 
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Wishlist getWishlist() {
         return wishlist;

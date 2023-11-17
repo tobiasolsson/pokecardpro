@@ -50,14 +50,23 @@ public class Card {
         return qualityRanking;
     }
 
+    public void setQualityRanking(String qualityRanking) {
+        this.qualityRanking = qualityRanking;
+    }
 
     public String getQualityComment() {
         return qualityComment;
     }
 
+    public void setQualityComment(String qualityComment) {
+        this.qualityComment = qualityComment;
+    }
 
     public String getImage() {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
