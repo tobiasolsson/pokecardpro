@@ -32,15 +32,9 @@ public class Wishlist {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Set<Pokemon> getPokemons() {
         return pokemons;
     }
 
-    public void setPokemons(Set<Pokemon> pokemons) {
-        this.pokemons = pokemons;
-    }
 }

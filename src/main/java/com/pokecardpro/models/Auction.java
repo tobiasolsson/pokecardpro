@@ -69,9 +69,6 @@ public class Auction {
         return watchlist;
     }
 
-    public void setWatchlist(Watchlist watchlist) {
-        this.watchlist = watchlist;
-    }
 
     public Auction(Card cardId, User userId, List<Bids> bids, String title, String description, boolean status,
                    int buyNow,
@@ -122,49 +119,31 @@ public class Auction {
         return bids;
     }
 
-    public void setBids(List<Bids> bids) {
-        this.bids = bids;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     public int getBuyNow() {
         return buyNow;
     }
 
-    public void setBuyNow(int buyNow) {
-        this.buyNow = buyNow;
-    }
 
     public int getReservedPrice() {
         return reservedPrice;
     }
 
-    public void setReservedPrice(int reservedPrice) {
-        this.reservedPrice = reservedPrice;
-    }
 
     public Timestamp getStartDate() {
         return startDate;
@@ -186,31 +165,19 @@ public class Auction {
         return pickUp;
     }
 
-    public void setPickUp(Boolean pickUp) {
-        this.pickUp = pickUp;
-    }
 
     public Shipping getShipping() {
         return shipping;
     }
 
-    public void setShipping(Shipping shipping) {
-        this.shipping = shipping;
-    }
 
     public int getShippingCost() {
         return shippingCost;
     }
 
-    public void setShippingCost(int shippingCost) {
-        this.shippingCost = shippingCost;
-    }
 
     public int getEndBid() {
         return endBid;
     }
 
-    public void setEndBid(int endBid) {
-        this.endBid = endBid;
-    }
 }
