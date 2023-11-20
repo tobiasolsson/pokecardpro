@@ -10,21 +10,84 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(targetEntity = Pokemon.class)
-    @JoinColumn(name = "poke_id", referencedColumnName = "id")
-    private Pokemon pokemon;
-
     private String qualityRanking;
 
     private String qualityComment;
 
     private String image;
 
-    public Card(Pokemon pokemon, String qualityRanking, String qualityComment, String image) {
-        this.pokemon = pokemon;
+    private String name;
+
+    private String set;
+
+    private int rarity;
+
+    private int cardNumber;
+
+    private String description;
+
+    public String getQualityRanking() {
+        return qualityRanking;
+    }
+
+    public void setQualityRanking(String qualityRanking) {
         this.qualityRanking = qualityRanking;
+    }
+
+    public String getQualityComment() {
+        return qualityComment;
+    }
+
+    public void setQualityComment(String qualityComment) {
         this.qualityComment = qualityComment;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSet() {
+        return set;
+    }
+
+    public void setSet(String set) {
+        this.set = set;
+    }
+
+    public int getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
+
+    public int getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Card() {
@@ -38,26 +101,5 @@ public class Card {
         this.id = id;
     }
 
-    public Pokemon getPokemon() {
-        return pokemon;
-    }
-
-    public void setPokemon(Pokemon pokemon) {
-        this.pokemon = pokemon;
-    }
-
-    public String getQualityRanking() {
-        return qualityRanking;
-    }
-
-
-    public String getQualityComment() {
-        return qualityComment;
-    }
-
-
-    public String getImage() {
-        return image;
-    }
 
 }
