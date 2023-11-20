@@ -40,10 +40,10 @@ public class AuctionController {
         return auctionService.getAuctionById(id);
     }
 
-    @GetMapping("auction/pokemon/{pokemonName}")
-    public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(@PathVariable String pokemonName) {
-        return auctionService.getAllAuctionsOfPokemon(pokemonName);
-    }
+   // @GetMapping("auction/pokemon/{pokemonName}")
+   // public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(@PathVariable String pokemonName) {
+   //     return auctionService.getAllAuctionsOfPokemon(pokemonName);
+   // }
 
     @GetMapping("auction-high-bids/{id}")
     public ResponseEntity<Integer> getHighestBidInAuction(@PathVariable String id) {
