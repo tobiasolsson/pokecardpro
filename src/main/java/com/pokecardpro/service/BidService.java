@@ -1,4 +1,7 @@
 package com.pokecardpro.service;
+import com.pokecardpro.dto.AuctionDTO;
+import com.pokecardpro.dto.BidsDTO;
+import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.Auction;
 import com.pokecardpro.models.Bids;
 import com.pokecardpro.models.User;
@@ -16,6 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class BidService {
@@ -82,14 +86,28 @@ public class BidService {
         }
     }
 
-    public ResponseEntity<List<Bids>> getBidsByAuction(String id) {
+    public ResponseEntity<List<BidsDTO>> getBidsByAuction(String id) {
         try {
             Auction auction = auctionRepository.findById(id).orElseThrow(
                     () -> new NoSuchElementException("Auction not found with id: " + id)
             );
-            List<Bids> bidsInAuction = auction.getBids();
 
-            return ResponseEntity.ok().body(bidsInAuction);
+            // Get the list of bids in auction
+            List<Bids> bidsList = auction.getBids();
+            // Loop all the bids in list, for each create a new BidsDTO and add to the list (the bidsDTO contains a new UserDTO, hence the messiness...)
+            List<BidsDTO> bidsDTOList = bidsList.stream()
+                                                .map(bid -> new BidsDTO(
+                                                        new UserDTO(bid.getUser().getFirstName(), bid.getUser().getLastName(),
+                                                                    bid.getUser().getEmail(), bid.getUser().getPhone(),
+                                                                    bid.getUser().getStreet(), bid.getUser().getStreetNr(),
+                                                                    bid.getUser().getCity(), bid.getUser().getZipCode()),
+                                                        bid.getCreated(),
+                                                        bid.getAmount()
+                                                ))
+                                                .toList();
+
+            // Return BidsDTO list
+            return ResponseEntity.ok().body(bidsDTOList);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

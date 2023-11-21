@@ -5,6 +5,7 @@ import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +49,7 @@ public class UserService {
     }
 
     @PreAuthorize("@authenticationService.getHasAccess(#id) or hasAuthority('ADMIN')")
-    public ResponseEntity<?> getUserById(String id) {
+    public ResponseEntity<UserDTO> getUserById(String id) {
         try {
             User currentUser = userRepository.findById(id).orElseThrow();
             UserDTO currentUserDTO = convertUserToUserDTO(currentUser);
@@ -56,7 +57,7 @@ public class UserService {
             return ResponseEntity.ok().body(currentUserDTO);
 
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
 
         }
@@ -106,7 +107,7 @@ public class UserService {
         return "You have won auction";
     }
 
-    public ResponseEntity<?> getCurrentUser() {
+    public ResponseEntity<UserDTO> getCurrentUser() {
 
         try {
             // TODO: Break out to own function, used multiple places
@@ -123,7 +124,7 @@ public class UserService {
             return ResponseEntity.ok().body(currentUserDTO);
 
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
