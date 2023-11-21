@@ -1,5 +1,6 @@
 package com.pokecardpro.controller;
 
+import com.pokecardpro.dto.AuctionDTO;
 import com.pokecardpro.models.Auction;
 import com.pokecardpro.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class AuctionController {
 
     @CrossOrigin()
     @GetMapping("auction/{id}")
-    public ResponseEntity<Auction> getAuctionById(@PathVariable String id) {
+    public ResponseEntity<AuctionDTO> getAuctionById(@PathVariable String id) {
         return auctionService.getAuctionById(id);
     }
 

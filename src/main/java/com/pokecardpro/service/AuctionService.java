@@ -1,5 +1,8 @@
 package com.pokecardpro.service;
 
+import com.pokecardpro.dto.AuctionDTO;
+import com.pokecardpro.dto.BidsDTO;
+import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.Auction;
 import com.pokecardpro.models.Bids;
 import com.pokecardpro.models.Card;
@@ -7,19 +10,16 @@ import com.pokecardpro.models.User;
 import com.pokecardpro.repository.AuctionRepository;
 import com.pokecardpro.repository.CardRepository;
 import com.pokecardpro.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -28,11 +28,14 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
+    private final BidService bidService;
 
-    public AuctionService(AuctionRepository auctionRepository, UserRepository userRepository, CardRepository cardRepository) {
+    public AuctionService(AuctionRepository auctionRepository, UserRepository userRepository, CardRepository cardRepository,
+                          BidService bidService) {
         this.auctionRepository = auctionRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.bidService = bidService;
     }
 
     //@PreAuthorize("@authenticationService.getHasAccess(#auction.userId.id)")
@@ -69,6 +72,7 @@ public class AuctionService {
         }
     }
 
+    // TODO: Return DTO
     public ResponseEntity<List<Auction>> getAllAuctions() {
         List<Auction> auctions = auctionRepository.findAll();
         if (auctions.isEmpty()) {
@@ -77,6 +81,7 @@ public class AuctionService {
         return ResponseEntity.ok(auctions);
     }
 
+    // TODO: Return DTO
     public ResponseEntity<List<Auction>> getAllActiveAuctions() {
         List<Auction> activeAuctions = auctionRepository.findAllAuctionsByStatusTrue();
         if (activeAuctions.isEmpty()) {
@@ -85,11 +90,27 @@ public class AuctionService {
         return ResponseEntity.ok(activeAuctions);
     }
 
-    public ResponseEntity<Auction> getAuctionById(String id) {
-        Optional<Auction> auction = auctionRepository.findById(id);
-        return auction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<AuctionDTO> getAuctionById(String id) {
+        try {
+           Auction auction = auctionRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Auction not found with id: " + id));
+            UserDTO userDTO = new UserDTO(auction.getUserId().getFirstName(), auction.getUserId().getLastName(),
+                                          auction.getUserId().getEmail(), auction.getUserId().getPhone(), auction.getUserId().getStreet(),
+                                          auction.getUserId().getStreetNr(), auction.getUserId().getCity(), auction.getUserId().getZipCode());
+            AuctionDTO auctionDTO = new AuctionDTO(userDTO, auction.getTitle(), auction.getDescription(),
+                                                   auction.isStatus(), auction.getBuyNow(), auction.getReservedPrice(),
+                                                   auction.getStartDate(), auction.getEndDate(), auction.getPickUp(),
+                                                   auction.getShipping(), auction.getShippingCost(), auction.getEndBid());
+
+            return ResponseEntity.ok(auctionDTO);
+
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        //return auction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // TODO: Return DTO
     public ResponseEntity<List<Auction>> getAllOldAuctions() {
         List<Auction> oldAuctions = auctionRepository.findAllAuctionsByStatusFalse();
         if (oldAuctions.isEmpty()) {
@@ -98,6 +119,7 @@ public class AuctionService {
         return ResponseEntity.ok(oldAuctions);
     }
 
+    // TODO: Return DTO
     public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(String pokemonName) {
         Predicate<Auction> predicate =
                 auction -> auction.getCardId().getPokemon().getName().equalsIgnoreCase(pokemonName);
@@ -114,14 +136,13 @@ public class AuctionService {
 
     public ResponseEntity<Integer> getHighestBidInAuction(String id) {
         try {
-            Auction auction = getAuctionById(id).getBody();
-            List<Bids> bids = auction.getBids();
+            List<BidsDTO> bids = (List<BidsDTO>) bidService.getBidsByAuction(id);
 
-            Bids highestBid = bids.stream()
-                    .max(Comparator.comparing(Bids::getAmount))
+            BidsDTO highestBid = bids.stream()
+                    .max(Comparator.comparing(BidsDTO::amount))
                     .orElse(null);
 
-            return ResponseEntity.ok(bids.isEmpty() ? 0 : highestBid.getAmount());
+            return ResponseEntity.ok(bids.isEmpty() ? 0 : highestBid.amount());
         } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body(0);
         }
