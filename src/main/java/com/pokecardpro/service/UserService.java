@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserDTO convertUserToUserDTO(User user) {
+    private UserDTO convertUserToUserDTO(User user) {
         return new UserDTO(user.getFirstName(),
                            user.getLastName(),
                            user.getEmail(),
@@ -63,10 +63,17 @@ public class UserService {
         }
     }
 
-    // TODO: return list of UserDTO
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        try {
+            List<User> users = userRepository.findAll();
+            List<UserDTO> userDTOList = users.stream()
+                                             .map(this::convertUserToUserDTO)
+                                             .toList();
+            return ResponseEntity.ok(userDTOList);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
@@ -122,5 +129,6 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }
 
