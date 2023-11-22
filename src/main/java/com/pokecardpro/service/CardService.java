@@ -1,9 +1,7 @@
 package com.pokecardpro.service;
 
 import com.pokecardpro.models.Card;
-import com.pokecardpro.models.Pokemon;
 import com.pokecardpro.repository.CardRepository;
-import com.pokecardpro.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +12,6 @@ public class CardService {
 
     @Autowired
     CardRepository cardRepository;
-    @Autowired
-    PokemonRepository pokemonRepository;
 
     public List<Card> getAllCards() {
         return cardRepository.findAll();
@@ -26,6 +22,11 @@ public class CardService {
     }
 
     public Card createCard(Card card) {
+        return cardRepository.save(card);
+    }
+
+    /*
+    public Card createCard(Card card) {
         // get actual user from userId in auction and set it in auction
         String pokemonId = Integer.toString(card.getPokemon().getId());
         Pokemon pokemon = pokemonRepository.findById(pokemonId).get();
@@ -33,6 +34,7 @@ public class CardService {
 
         return cardRepository.save(card);
     }
+    */
 
     public Card updateCard(Card card) {
         return cardRepository.save(card);

@@ -10,41 +10,21 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(targetEntity = Pokemon.class)
-    @JoinColumn(name = "poke_id", referencedColumnName = "id")
-    private Pokemon pokemon;
-
     private String qualityRanking;
 
     private String qualityComment;
 
     private String image;
 
-    public Card(Pokemon pokemon, String qualityRanking, String qualityComment, String image) {
-        this.pokemon = pokemon;
-        this.qualityRanking = qualityRanking;
-        this.qualityComment = qualityComment;
-        this.image = image;
-    }
+    private String name;
 
-    public Card() {
-    }
+    private String set;
 
-    public int getId() {
-        return id;
-    }
+    private int rarity;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int cardNumber;
 
-    public Pokemon getPokemon() {
-        return pokemon;
-    }
-
-    public void setPokemon(Pokemon pokemon) {
-        this.pokemon = pokemon;
-    }
+    private String description;
 
     public String getQualityRanking() {
         return qualityRanking;
@@ -69,4 +49,57 @@ public class Card {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSet() {
+        return set;
+    }
+
+    public void setSet(String set) {
+        this.set = set;
+    }
+
+    public int getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
+
+    public int getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Card() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }

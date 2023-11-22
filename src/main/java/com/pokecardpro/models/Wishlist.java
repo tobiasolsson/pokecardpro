@@ -16,17 +16,18 @@ public class Wishlist {
     @Column(name = "wishlist_name")
     private String name;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
-    private Set<Pokemon> pokemons;
+
+ //   @JsonManagedReference
+ //   @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
+ //   private Set<Pokemon> pokemons;
 
     public Wishlist() {
     }
 
-    public Wishlist(String name, Set<Pokemon> pokemons) {
-        this.name = name;
-        this.pokemons = pokemons;
-    }
+   // public Wishlist(String name, Set<Pokemon> pokemons) {
+   //     this.name = name;
+   //     this.pokemons = pokemons;
+   // }
 
     public String getName() {
         return name;
@@ -36,11 +37,11 @@ public class Wishlist {
         this.name = name;
     }
 
-    public Set<Pokemon> getPokemons() {
-        return pokemons;
-    }
+   // public Set<Pokemon> getPokemons() {
+//        return pokemons;
+  //  }
 
-    public void setPokemons(Set<Pokemon> pokemons) {
-        this.pokemons = pokemons;
-    }
+    //public void setPokemons(Set<Pokemon> pokemons) {
+     //   this.pokemons = pokemons;
+   // }
 }
