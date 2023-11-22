@@ -110,12 +110,7 @@ public class UserService {
     public ResponseEntity<UserDTO> getCurrentUser() {
 
         try {
-            // TODO: Break out to own function, used multiple places
-            // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
-            String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-            User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
-                    () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
-            String userId = String.valueOf(userAuth.getId());
+            String userId = authenticationService.getUserId();
 
 
             User currentUser = userRepository.findById(userId).orElseThrow();

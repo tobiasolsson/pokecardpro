@@ -1,10 +1,9 @@
 package com.pokecardpro.service;
 
+import com.pokecardpro.auth.AuthenticationService;
 import com.pokecardpro.dto.AuctionDTO;
 import com.pokecardpro.dto.BidsDTO;
-import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.Auction;
-import com.pokecardpro.models.Bids;
 import com.pokecardpro.models.Card;
 import com.pokecardpro.models.User;
 import com.pokecardpro.repository.AuctionRepository;
@@ -12,7 +11,6 @@ import com.pokecardpro.repository.CardRepository;
 import com.pokecardpro.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -28,13 +26,15 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
+    private final AuthenticationService authenticationService;
     private final BidService bidService;
 
     public AuctionService(AuctionRepository auctionRepository, UserRepository userRepository, CardRepository cardRepository,
-                          BidService bidService) {
+                          AuthenticationService authenticationService, BidService bidService) {
         this.auctionRepository = auctionRepository;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.authenticationService = authenticationService;
         this.bidService = bidService;
     }
 
@@ -50,12 +50,7 @@ public class AuctionService {
             // get actual user from userId in auction and set it in auction
             //String userId = Integer.toString(auction.getUserId().getId());
 
-            // TODO: Break out to own function, used multiple places
-            // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
-            String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-            User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
-                    () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
-            String userId = String.valueOf(userAuth.getId());
+            String userId = authenticationService.getUserId();
 
             User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found with id " + userId));
             auction.setUserId(user);
@@ -72,39 +67,28 @@ public class AuctionService {
         }
     }
 
-    // TODO: Return DTO
-    public ResponseEntity<List<Auction>> getAllAuctions() {
-        List<Auction> auctions = auctionRepository.findAll();
-        if (auctions.isEmpty()) {
+    public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
+        try {
+            List<Auction> auctions = auctionRepository.findAll();
+            return handleAuctionList(auctions);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(auctions);
     }
 
-    // TODO: Return DTO
-    public ResponseEntity<List<Auction>> getAllActiveAuctions() {
-        List<Auction> activeAuctions = auctionRepository.findAllAuctionsByStatusTrue();
-        if (activeAuctions.isEmpty()) {
+    public ResponseEntity<List<AuctionDTO>> getAllActiveAuctions() {
+        try {
+            List<Auction> auctions = auctionRepository.findAllAuctionsByStatusTrue();
+            return handleAuctionList(auctions);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(activeAuctions);
     }
 
     public ResponseEntity<AuctionDTO> getAuctionById(String id) {
         try {
            Auction auction = auctionRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Auction not found with id: " + id));
-           AuctionDTO auctionDTO = new AuctionDTO(auction.getId(),
-                                                   auction.getTitle(),
-                                                   auction.getDescription(),
-                                                   auction.isStatus(),
-                                                   auction.getBuyNow(),
-                                                   auction.getReservedPrice(),
-                                                   auction.getStartDate(),
-                                                   auction.getEndDate(),
-                                                   auction.getPickUp(),
-                                                   auction.getShipping(),
-                                                   auction.getShippingCost(),
-                                                   auction.getEndBid());
+           AuctionDTO auctionDTO = convertToAuctionDTO(auction);
 
             return ResponseEntity.ok(auctionDTO);
 
@@ -115,16 +99,16 @@ public class AuctionService {
         //return auction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // TODO: Return DTO
-    public ResponseEntity<List<Auction>> getAllOldAuctions() {
-        List<Auction> oldAuctions = auctionRepository.findAllAuctionsByStatusFalse();
-        if (oldAuctions.isEmpty()) {
+    public ResponseEntity<List<AuctionDTO>> getAllOldAuctions() {
+        try {
+            List<Auction> auctions = auctionRepository.findAllAuctionsByStatusFalse();
+            return handleAuctionList(auctions);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(oldAuctions);
     }
 
-    // TODO: Return DTO
+    // TODO: Return DTO, if it is needed when pokemon table is removed?
     public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(String pokemonName) {
         Predicate<Auction> predicate =
                 auction -> auction.getCardId().getPokemon().getName().equalsIgnoreCase(pokemonName);
@@ -152,4 +136,33 @@ public class AuctionService {
             return ResponseEntity.badRequest().body(0);
         }
     }
+
+    private AuctionDTO convertToAuctionDTO(Auction auction) {
+        return new AuctionDTO(auction.getId(),
+                              auction.getTitle(),
+                              auction.getDescription(),
+                              auction.isStatus(),
+                              auction.getBuyNow(),
+                              auction.getReservedPrice(),
+                              auction.getStartDate(),
+                              auction.getEndDate(),
+                              auction.getPickUp(),
+                              auction.getShipping(),
+                              auction.getShippingCost(),
+                              auction.getEndBid());
+    }
+
+    private ResponseEntity<List<AuctionDTO>> handleAuctionList(List<Auction> auctions) {
+        try {
+            if (auctions.isEmpty()) throw new NoSuchElementException("No auctions found");
+            List<AuctionDTO> auctionDTOList = auctions.stream()
+                                                      .map(this::convertToAuctionDTO)
+                                                      .toList();
+
+            return ResponseEntity.ok(auctionDTOList);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

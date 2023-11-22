@@ -1,7 +1,6 @@
 package com.pokecardpro.service;
-import com.pokecardpro.dto.AuctionDTO;
+import com.pokecardpro.auth.AuthenticationService;
 import com.pokecardpro.dto.BidsDTO;
-import com.pokecardpro.dto.UserDTO;
 import com.pokecardpro.models.Auction;
 import com.pokecardpro.models.Bids;
 import com.pokecardpro.models.User;
@@ -11,7 +10,6 @@ import com.pokecardpro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class BidService {
@@ -33,6 +30,12 @@ public class BidService {
     @Autowired
     UserRepository userRepository;
 
+    private final AuthenticationService authenticationService;
+
+    public BidService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
     //@PreAuthorize("@authenticationService.getHasAccess(#bids.user.id)") // behövs inte om vi hämtar user id från securitycontext?
     public ResponseEntity<String> placeBid (Bids bids) {
         // get current timestamp
@@ -42,13 +45,7 @@ public class BidService {
 
         // get the ids of user and auctions
         String auctionId = Integer.toString(bids.getAuction().getId());
-
-        // TODO: Break out to own function, used multiple places
-        // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
-        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User userAuth = userRepository.findByEmail(authenticatedUserEmail).orElseThrow(
-                () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
-        String userId = String.valueOf(userAuth.getId());
+        String userId = authenticationService.getUserId();
 
         try {
             // get user and auction
