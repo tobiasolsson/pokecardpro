@@ -63,7 +63,7 @@ public class UserService {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         try {
             List<User> users = userRepository.findAll();

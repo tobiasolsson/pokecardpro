@@ -69,7 +69,7 @@ public class BidService {
                 auctionRepository.save(auction);
                 return ResponseEntity.status(HttpStatus.CREATED).body("Bid successfully placed!");
             } else {
-                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Bid not placed!");
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Bid not placed, auction expired.");
             }
         } catch (NoSuchElementException e) {
             String errorMessage = "";
