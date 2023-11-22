@@ -93,13 +93,18 @@ public class AuctionService {
     public ResponseEntity<AuctionDTO> getAuctionById(String id) {
         try {
            Auction auction = auctionRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Auction not found with id: " + id));
-            UserDTO userDTO = new UserDTO(auction.getUserId().getFirstName(), auction.getUserId().getLastName(),
-                                          auction.getUserId().getEmail(), auction.getUserId().getPhone(), auction.getUserId().getStreet(),
-                                          auction.getUserId().getStreetNr(), auction.getUserId().getCity(), auction.getUserId().getZipCode());
-            AuctionDTO auctionDTO = new AuctionDTO(userDTO, auction.getTitle(), auction.getDescription(),
-                                                   auction.isStatus(), auction.getBuyNow(), auction.getReservedPrice(),
-                                                   auction.getStartDate(), auction.getEndDate(), auction.getPickUp(),
-                                                   auction.getShipping(), auction.getShippingCost(), auction.getEndBid());
+           AuctionDTO auctionDTO = new AuctionDTO(auction.getId(),
+                                                   auction.getTitle(),
+                                                   auction.getDescription(),
+                                                   auction.isStatus(),
+                                                   auction.getBuyNow(),
+                                                   auction.getReservedPrice(),
+                                                   auction.getStartDate(),
+                                                   auction.getEndDate(),
+                                                   auction.getPickUp(),
+                                                   auction.getShipping(),
+                                                   auction.getShippingCost(),
+                                                   auction.getEndBid());
 
             return ResponseEntity.ok(auctionDTO);
 

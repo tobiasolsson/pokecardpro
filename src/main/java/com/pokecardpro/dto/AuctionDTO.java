@@ -4,8 +4,7 @@ import com.pokecardpro.models.Shipping;
 
 import java.sql.Timestamp;
 
-// TODO: Behöver vi UserDTO här?
-public record AuctionDTO(UserDTO userDTO,
+public record AuctionDTO(int id,
                          String title,
                          String description,
                          boolean status,

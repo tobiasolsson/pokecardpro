@@ -94,13 +94,10 @@ public class BidService {
 
             // Get the list of bids in auction
             List<Bids> bidsList = auction.getBids();
-            // Loop all the bids in list, for each create a new BidsDTO and add to the list (the bidsDTO contains a new UserDTO, hence the messiness...)
+            // Loop all the bids in list, for each create a new BidsDTO and add to the list
             List<BidsDTO> bidsDTOList = bidsList.stream()
                                                 .map(bid -> new BidsDTO(
-                                                        new UserDTO(bid.getUser().getFirstName(), bid.getUser().getLastName(),
-                                                                    bid.getUser().getEmail(), bid.getUser().getPhone(),
-                                                                    bid.getUser().getStreet(), bid.getUser().getStreetNr(),
-                                                                    bid.getUser().getCity(), bid.getUser().getZipCode()),
+                                                        bid.getUser().getFirstName(),
                                                         bid.getCreated(),
                                                         bid.getAmount()
                                                 ))
