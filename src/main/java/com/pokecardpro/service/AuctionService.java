@@ -108,8 +108,8 @@ public class AuctionService {
         }
     }
 
-    // TODO: Return DTO, if it is needed when pokemon table is removed?
-    public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(String pokemonName) {
+    /*
+        public ResponseEntity<List<Auction>> getAllAuctionsOfPokemon(String pokemonName) {
         Predicate<Auction> predicate =
                 auction -> auction.getCardId().getPokemon().getName().equalsIgnoreCase(pokemonName);
 
@@ -122,6 +122,11 @@ public class AuctionService {
         }
         return ResponseEntity.ok(pokemonAuctions);
     }
+    */
+
+
+
+
 
     public ResponseEntity<Integer> getHighestBidInAuction(String id) {
         try {
