@@ -21,17 +21,17 @@ public class AuctionController {
     }
 
     @GetMapping("auction")
-    public ResponseEntity<List<Auction>> getAllAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
         return auctionService.getAllAuctions();
     }
 
     @GetMapping("auction/active")
-    public ResponseEntity<List<Auction>> getAllActiveAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllActiveAuctions() {
         return auctionService.getAllActiveAuctions();
     }
 
     @GetMapping("auction/old")
-    public ResponseEntity<List<Auction>> getAllOldAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllOldAuctions() {
         return auctionService.getAllOldAuctions();
     }
 
