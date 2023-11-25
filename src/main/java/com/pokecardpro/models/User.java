@@ -38,10 +38,6 @@ public class User implements UserDetails {
     @JsonBackReference
     private Watchlist watchlist;
 
-    @OneToOne
-    @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
-    private Wishlist wishlist;
-
     public User() {
     }
 
@@ -55,7 +51,7 @@ public class User implements UserDetails {
 
     public User(String firstName, String lastName, String email, String password, int phone, String street,
                 int streetNr,
-                String city, int zipCode, Role role, Watchlist watchlist, Wishlist wishlist) {
+                String city, int zipCode, Role role, Watchlist watchlist) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -67,7 +63,7 @@ public class User implements UserDetails {
         this.zipCode = zipCode;
         this.role = role;
         this.watchlist = watchlist;
-        this.wishlist = wishlist;
+
     }
 
     public Role getRole() {
@@ -189,11 +185,5 @@ public class User implements UserDetails {
         this.zipCode = zipCode;
     }
 
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
 
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
-    }
 }
