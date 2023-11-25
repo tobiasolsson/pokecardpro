@@ -1,5 +1,6 @@
 package com.pokecardpro.controller;
 
+import com.pokecardpro.dto.AuctionDTO;
 import com.pokecardpro.models.Auction;
 import com.pokecardpro.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +21,23 @@ public class AuctionController {
     }
 
     @GetMapping("auction")
-    public ResponseEntity<List<Auction>> getAllAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
         return auctionService.getAllAuctions();
     }
 
     @GetMapping("auction/active")
-    public ResponseEntity<List<Auction>> getAllActiveAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllActiveAuctions() {
         return auctionService.getAllActiveAuctions();
     }
 
     @GetMapping("auction/old")
-    public ResponseEntity<List<Auction>> getAllOldAuctions() {
+    public ResponseEntity<List<AuctionDTO>> getAllOldAuctions() {
         return auctionService.getAllOldAuctions();
     }
 
     @CrossOrigin()
     @GetMapping("auction/{id}")
-    public ResponseEntity<Auction> getAuctionById(@PathVariable String id) {
+    public ResponseEntity<AuctionDTO> getAuctionById(@PathVariable String id) {
         return auctionService.getAuctionById(id);
     }
 

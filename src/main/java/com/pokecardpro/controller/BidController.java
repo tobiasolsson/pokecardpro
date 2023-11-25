@@ -1,4 +1,5 @@
 package com.pokecardpro.controller;
+import com.pokecardpro.dto.BidsDTO;
 import com.pokecardpro.models.Bids;
 import com.pokecardpro.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class BidController {
     }
 
     @GetMapping("bids/{id}")
-    public ResponseEntity<List<Bids>> getAllBidsInAuction(@PathVariable String id) {
+    public ResponseEntity<List<BidsDTO>> getAllBidsInAuction(@PathVariable String id) {
         return bidService.getBidsByAuction(id);
     }
 }

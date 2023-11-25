@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class AuthenticationService {
     private final UserRepository repository;
@@ -72,5 +74,14 @@ public class AuthenticationService {
         String suppliedUserEmail = repository.findById(id).get().getEmail();
 
         return authenticatedUserEmail.equalsIgnoreCase(suppliedUserEmail);
+    }
+
+    public String getUserId() {
+        // get the userId from the securitycontext, this way we don't need to send and deal with user id on the frontend
+        String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User userAuth = repository.findByEmail(authenticatedUserEmail).orElseThrow(
+                () -> new NoSuchElementException("Something went wrong trying to fetch user object"));
+
+        return String.valueOf(userAuth.getId());
     }
 }
