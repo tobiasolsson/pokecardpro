@@ -47,10 +47,6 @@ public class Watchlist {
         return auctions;
     }
 
-    public void setAuctions(List<Auction> auctions) {
-        this.auctions = auctions;
-    }
-
     public User getUser() {
         return user;
     }
